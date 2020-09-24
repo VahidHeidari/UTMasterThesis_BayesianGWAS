@@ -30,3 +30,28 @@
 *.exe
 *.out
 *.app
+
+
+
+# Temporary files
+*.pyc
+*.stackdump
+*.swp
+*~
+
+# Visual studio files
+*.opensdf
+*.sdf
+*.suo
+
+# Log files
+log_file.txt
+log.txt
+
+# Directories
+.vs
+Debug
+Release
+__pycache__
+x64
+
