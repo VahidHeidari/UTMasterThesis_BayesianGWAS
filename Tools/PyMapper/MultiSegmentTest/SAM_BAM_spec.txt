@@ -1,0 +1,10 @@
+                  11111  11111222222222233333333   33444444
+Coor     12345678901234  56789012345678901234567   89012345
+ref      AGCATGTTAGATAA**GATAGCTGTGCTAGTAGGCAGTC***AGCGCCAT
+
++r001/1        TTAGATAAAGGATA*CTG
++r002         aaaAGATAA*GGATA
++r003       gcctaAGCTAA
++r004                     ATAGCT..............TCGGGAGC
+-r003                            ttagctTAGGC
+-r001/2                                        C---AGCGCCAT

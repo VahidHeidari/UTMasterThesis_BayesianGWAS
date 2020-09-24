@@ -1,0 +1,5 @@
+chr1	smpl	CDS	10	189	.	+	0gene_id 1; transcript_id 1;
+chr1	smpl	CDS	291	490	.	+	0gene_id 1; transcript_id 1;
+chr1	smpl	exon	190	290	.	+	0gene_id 1; transcript_id 1;
+chr1	smpl	start_codone	10	12	.	+	0gene_id 1; transcript_id 1;
+chr1	smpl	end_codone	488	490	.	+	0gene_id 1; transcript_id 1;

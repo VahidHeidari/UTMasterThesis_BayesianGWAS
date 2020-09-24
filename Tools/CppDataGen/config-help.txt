@@ -1,0 +1,33 @@
+Simulation model      : ADMIXTURE | NO_ADMIXTURE | CASE_CONTROL
+Number of chromosomes : int
+Number of loci        : int
+Number of alleles     : int
+Iterations            : int
+Number of clusters    : int
+
+
+
+if (ADMIXURE || NO_ADMIXTURE)
+	Number of individuals in each cluster : int[NUM_CLUSTERS]
+	Allele frequencies in each cluster    : double[NUM_CLUSTERS][NUM_CHROMOSOMES][NUM_LOCI]
+
+
+
+if (ADMIXTURE)
+	Number of admix iterations : int
+	Number of admix clusters   : int
+	Admixture prameters        : AdmixPars[NUM_ADMIX_CLUSTERS]
+		Number of individuals in each admix cluster : int
+		Number of admix groups                      : int
+		Subpopulation numbers                       : int[NUM_ADMIX_CLUSTERS]
+		Admix proportion of each subpopulations     : double[NUM_ADMIX_CLUSTERS]
+
+
+
+if (CASE_CONTROL)
+	Percent of different MAF SNPs in clusters : double
+	Number of infected loci                   : int
+	Number of individuals in each cluster     : int[NUM_CLUSTERS]
+	Percent of case individuals               : double[NUM_CLUSTERS]
+	Infected loci                             : int[NUM_CLUSTERS][NUM_INFECTED_LOCI]
+

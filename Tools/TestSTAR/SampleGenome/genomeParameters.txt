@@ -1,0 +1,16 @@
+### /cygdrive/e/C++/STAR/source/STAR   --runMode genomeGenerate   --runThreadN 1   --genomeDir SampleGenome   --genomeFastaFiles SampleGenome\genome.fasta      --genomeSAindexNbases 3   --outFileNamePrefix SampleGenome\   --sjdbGTFfile SampleGenome\genome.gtf   --sjdbOverhang 9
+### GstrandBit 32
+versionGenome	2.7.1a
+genomeFastaFiles	SampleGenome\genome.fasta 
+genomeSAindexNbases	3
+genomeChrBinNbits	18
+genomeSAsparseD	1
+sjdbOverhang	9
+sjdbFileChrStartEnd	- 
+sjdbGTFfile	SampleGenome\genome.gtf
+sjdbGTFchrPrefix	-
+sjdbGTFfeatureExon	exon
+sjdbGTFtagExonParentTranscript	transcript_id
+sjdbGTFtagExonParentGene	gene_id
+sjdbInsertSave	Basic
+genomeFileSizes	262144 4128

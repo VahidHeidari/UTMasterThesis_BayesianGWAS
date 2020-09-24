@@ -1,0 +1,22 @@
+CXX_FLAGS=-O3 -std=c++2a -Wall -Wno-unused
+#CXX_FLAGS=-g -std=c++2a -Wall -Wno-unused
+
+
+ifdef OS
+	OUT_NAME=cont.exe
+else
+	OUT_NAME=cont.out
+endif
+
+
+all:
+	g++ $(CXX_FLAGS) -c asa147.cpp -o asa147.o
+	g++ $(CXX_FLAGS) -c contingency.cpp -o contingency.o
+	g++ $(CXX_FLAGS) contingency.o asa147.o -o $(OUT_NAME)
+	./$(OUT_NAME) > p_vals.txt
+	python3 plot.py
+
+
+clean:
+	rm asa147.o contingency.o $(OUT_NAME)
+
