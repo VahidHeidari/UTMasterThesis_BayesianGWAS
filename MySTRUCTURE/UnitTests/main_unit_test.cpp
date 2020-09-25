@@ -145,6 +145,53 @@ static void TestGenosMatrix()
 		logger << "Some thing is going worng!" << std::endl;
 }
 
+static void TestGenosMatrixFromFile()
+{
+	BitGenosMatrix genos;
+	if (!genos.ReadFromTextFile("F:\\C++\\fastStructure\\TestStr\\Cpp\\Test14\\cpp_dise_genos_K2_L10000_D5_N500.str-faststr.txt")) {
+		logger << "Could not open genotype text file!" << std::endl;
+		return;
+	}
+
+	// [ indiv, locus, genotype ]
+	static const int TEST_CASES[] = {
+		0, 0, 1,
+		0, 9999, 1,
+		0, 9996, 2,
+
+		1, 0, 1,
+		1, 9999, 1,
+		1, 9997, 2,
+
+		499, 0, 1,
+		499, 1, 1,
+		499, 12, 2,
+
+		500, 0, 2,
+		500, 1, 1,
+		500, 5, 0,
+
+		999, 0, 2,
+		999, 1, 1,
+		999, 2, 0,
+	};
+	static constexpr int NUM_TEST_ITEMS = sizeof(TEST_CASES) / sizeof(TEST_CASES[0]) / 3;
+
+	bool is_ok = true;
+	for (int i = 0; i < NUM_TEST_ITEMS; ++i) {
+		const int INDIV = TEST_CASES[i * 3];
+		const int LOCUS = TEST_CASES[i * 3 + 1];
+		const int G = TEST_CASES[i * 3 + 2];
+		const int EXP = genos.GetGeno(INDIV, LOCUS);
+		if (G != EXP) {
+			logger << "Some error found! in [ indiv:" << INDIV << ", locus:" << LOCUS << ", G:" << G << " ] != " << EXP << std::endl;
+			is_ok = false;
+		}
+	}
+
+	logger << "Text genotype test " << (is_ok ? "PASSED" : "FAILED") << '!' << std::endl;
+}
+
 
 
 int main()
@@ -155,6 +202,7 @@ int main()
 
 	//TestFastMakeCombinations();
 	TestGenosMatrix();
+	TestGenosMatrixFromFile();
 
 	logger << "End : " << Time << std::endl << std::endl;
 	logger << " [OK] TEST PASSED!" << std::endl << std::endl;

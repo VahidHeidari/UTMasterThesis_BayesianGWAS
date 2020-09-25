@@ -6,7 +6,8 @@
 #include <fstream>
 #include <string>
 
-//#define USE_VECTOR_GENOS		1
+// Comment below line to reduce memory usage.
+#define USE_VECTOR_GENOS		1
 
 #ifdef USE_VECTOR_GENOS
 #include <vector>
@@ -19,21 +20,22 @@ public:
 
 	static constexpr int BITS_PER_GENOTYPE = 2;
 	static constexpr int GENOTYPE_MASK = (1 << BITS_PER_GENOTYPE) - 1;
-	static constexpr int INDIVS_PER_WORD = sizeof(GenotypeMatrixType) * CHAR_BIT / BITS_PER_GENOTYPE;;
+	static constexpr int INDIVS_PER_WORD = sizeof(GenotypeMatrixType) * CHAR_BIT / BITS_PER_GENOTYPE;
 
 	static inline int GetWordsPerRow(int num_indivs) { return (num_indivs + INDIVS_PER_WORD) / INDIVS_PER_WORD; }
 
 	BitGenosMatrix()
-		: num_indivs(0), num_loci(0), num_clusters(0), num_words_per_row(0)
+		: num_cluster_indivs(0), num_loci(0), num_clusters(0), num_indivs(0), num_words_per_row(0)
 #ifndef USE_VECTOR_GENOS
 		, genos(nullptr)
 #endif
 	{}
 
 	BitGenosMatrix(int num_indivs, int num_loci, int num_clusters)
-		: num_indivs(num_indivs)
+		: num_cluster_indivs(num_indivs)
 		, num_loci(num_loci)
 		, num_clusters(num_clusters)
+		, num_indivs(num_cluster_indivs * num_clusters)
 		, num_words_per_row(GetWordsPerRow(num_indivs))
 #ifndef USE_VECTOR_GENOS
 		, genos(nullptr)
@@ -56,9 +58,10 @@ public:
 		genos.clear();
 #endif
 
-		this->num_indivs = num_indivs;
+		num_cluster_indivs = num_indivs;
 		this->num_loci = num_loci;
 		this->num_clusters = num_clusters;
+		this->num_indivs = num_cluster_indivs * num_clusters;
 		num_words_per_row = GetWordsPerRow(num_indivs);
 		Init();
 	}
@@ -131,16 +134,17 @@ public:
 		std::string tmp_str;
 		genos_file >> tmp_str >> num_indivs >> tmp_str >> num_loci >> tmp_str >> num_clusters;
 
-		this->num_indivs = num_indivs;
+		num_cluster_indivs = num_indivs;
 		this->num_loci = num_loci;
 		this->num_clusters = num_clusters;
-		num_words_per_row = GetWordsPerRow(num_indivs);
+		this->num_indivs = num_indivs * num_clusters;
+		num_words_per_row = GetWordsPerRow(this->num_indivs);
 		Init();
 
 		// Read genotype.
 		char geno;
-		for (int i = 0; i < num_indivs; ++i)
-			for (int l = 0; l < num_loci; ++l) {
+		for (int i = 0; i < GetNumIndivs(); ++i)
+			for (int l = 0; l < GetNumLoci(); ++l) {
 				genos_file >> geno;
 				if (geno == '\r' || geno == '\n')
 					continue;
@@ -154,7 +158,7 @@ public:
 private:
 	inline int GetLocusIdx(int locus) const { return num_words_per_row * locus; }
 	static inline int GetIndivIdx(int indiv) {	return indiv / INDIVS_PER_WORD; }
-	inline int GetBitNum(int indiv) const { return (indiv % INDIVS_PER_WORD) * BITS_PER_GENOTYPE; }
+	inline int GetBitNum(int indiv) const { return (indiv * BITS_PER_GENOTYPE) % (CHAR_BIT * sizeof(GenotypeMatrixType)); }
 
 	void Init()
 	{
@@ -169,9 +173,10 @@ private:
 #endif
 	}
 
-	int num_indivs;
+	int num_cluster_indivs;
 	int num_loci;
 	int num_clusters;
+	int num_indivs;
 	int num_words_per_row;
 
 #ifdef USE_VECTOR_GENOS

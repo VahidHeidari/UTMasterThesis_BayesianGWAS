@@ -12,7 +12,7 @@
 #include "bit_genos_matrix.h"
 #include "logger.h"
 
-// Uncomment to use bit field genotypes.
+// Comment to use raw pointers.
 #define USE_VECTOR							1
 
 // Uncomment only one of the following lines.
@@ -80,7 +80,7 @@ inline static FloatType digamma(FloatType x)
 
 inline static double LogBeta(double x, double y)
 {
-	// beta functio : (tgamma(x) * tgamma(y)) / tgamma(x + y)
+	// beta function : (tgamma(x) * tgamma(y)) / tgamma(x + y)
 	const double res = lgamma(x) + lgamma(y) - lgamma(x + y);
 	return res;  
 }
