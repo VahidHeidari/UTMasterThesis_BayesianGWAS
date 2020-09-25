@@ -898,7 +898,7 @@ int main(int argc, char** argv)
 	}
 
 	DumpVarParams(genos, z, q, p);		// Dump variational parameters.
-	CalcAcc(q);
+	CalcAcc(q);							// Report accuracy of clustering.
 	logger << "End : " << Time << std::endl << std::endl;
 	return 0;
 }
