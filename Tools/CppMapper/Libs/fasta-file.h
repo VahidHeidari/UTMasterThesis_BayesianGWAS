@@ -276,4 +276,5 @@ private:
 	std::string cur_name;
 	Chromosome lazy_chromosome;
 };
+
 #endif

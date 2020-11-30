@@ -96,9 +96,8 @@ static inline const std::string& GetCIGAR(const SAMRec& rec)
 	return rec[SAM_FIELDS::CIGAR];
 }
 
-static inline void SplitCIGAR(const SAMRec& rec, CIGAROps& ops)
+static inline void SplitCIGARFromStr(const std::string& cigar, CIGAROps& ops)
 {
-	const std::string& cigar = GetCIGAR(rec);
 	ops.ops.clear();
 	ops.ops_len.clear();
 	size_t i = 0;
@@ -111,6 +110,12 @@ static inline void SplitCIGAR(const SAMRec& rec, CIGAROps& ops)
 		ops.ops.push_back(cigar[j]);
 		i = j + 1;
 	}
+}
+
+static inline void SplitCIGAR(const SAMRec& rec, CIGAROps& ops)
+{
+	const std::string& cigar = GetCIGAR(rec);
+	SplitCIGARFromStr(cigar, ops);
 }
 
 #endif

@@ -13,7 +13,8 @@ def Log(msg, is_verbose=IS_VERBOSE):
 	time_str = time.ctime(time.time())
 	out_msg = time_str + ' ' + str(msg)
 	print(out_msg)
-	with open('log.txt', 'a') as f:
+        log_file_date = time.strftime('%Y%m%d')
+	with open('log-py-{}.txt'.format(log_file_date), 'a') as f:
 		f.write(out_msg + '\n')
 		f.flush()
 

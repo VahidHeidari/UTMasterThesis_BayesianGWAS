@@ -1,13 +1,21 @@
 #ifndef SAM_TO_GENOTYPES_H_
 #define SAM_TO_GENOTYPES_H_
 
+#include <climits>
 #include <cstdint>
+#include <iomanip>
 #include <iostream>
 #include <string>
 #include <type_traits>
 #include <vector>
 
 #include "fasta-file.h"
+
+#ifndef USE_LAZY_GET_NUCLEOTIDE
+#define FASTA_CONST		const
+#else
+#define FASTA_CONST
+#endif
 
 
 
@@ -24,19 +32,20 @@ enum NUCLEOTIDE_FLAGS {
 
 constexpr bool IS_BINARY_OUTPUT = true;
 constexpr bool IS_COMPRESSED_OUTPUT = true;
-constexpr int OUT_FILE_FLAGS = IS_BINARY_OUTPUT || IS_COMPRESSED_OUTPUT ? std::ios_base::binary | std::ios_base::out : std::ios_base::out;
+constexpr std::ios_base::openmode OUT_FILE_FLAGS = (IS_BINARY_OUTPUT || IS_COMPRESSED_OUTPUT)
+	? std::ios_base::binary | std::ios_base::out
+	: std::ios_base::out;
 
 constexpr int NUM_SAM_REC_PRINT = 500000;
 constexpr int BITS_PER_GENOTYPE = 2;
-constexpr int BUFFER_BITS = sizeof(int) * CHAR_BIT;
+constexpr int BUFFER_BITS = sizeof(uint32_t) * CHAR_BIT;
 
 
 
 static inline uint32_t GetNucleotideFlag(char nucleotide)
 {
 	uint32_t flg = 0;
-	switch (nucleotide)
-	{
+	switch (nucleotide) {
 	case 'A': flg = NUCLEOTIDE_FLAGS::A; break;
 	case 'C': flg = NUCLEOTIDE_FLAGS::C; break;
 	case 'G': flg = NUCLEOTIDE_FLAGS::G; break;
@@ -49,20 +58,13 @@ static inline uint32_t GetNucleotideFlag(char nucleotide)
 
 struct GenotypeRec
 {
-	inline bool HasNucleotide(int flag) const
-	{
-		return (nucleotides & flag) == flag;
-	}
+	inline bool HasNucleotide(int flag) const { return static_cast<int>(nucleotides & flag) == flag; }
+	inline bool IsMatched() const { return HasNucleotide(NUCLEOTIDE_FLAGS::MATCHED); }
 
 	inline bool HasNucleotide(char nucleotide) const
 	{
 		int flg = GetNucleotideFlag(nucleotide);
 		return HasNucleotide(flg);
-	}
-
-	inline bool IsMatched() const
-	{
-		return HasNucleotide(NUCLEOTIDE_FLAGS::MATCHED);
 	}
 
 	inline void AddNucleotide(char nucleotide)
@@ -71,13 +73,7 @@ struct GenotypeRec
 		nucleotides |= flg;
 	}
 
-	inline void SetCIGAR(char flag, const std::string& ref_name,
-#ifndef USE_LAZY_GET_NUCLEOTIDE
-		const FastaFile& fasta
-#else
-		FastaFile& fasta
-#endif
-	)
+	inline void SetCIGAR(char flag, const std::string& ref_name, FASTA_CONST FastaFile& fasta)
 	{
 		if (flag == 'X')
 			return;
@@ -171,23 +167,17 @@ public:
 		inserts.clear();
 	}
 
-	void Add(int sam_pos, char nucleotide, char CIGAR_flag, const std::string& ref_name,
-#ifndef USE_LAZY_GET_NUCLEOTIDE
-		const FastaFile& fasta
-#else
-		FastaFile& fasta
-#endif
-	)
+	void Add(int sam_pos, char nucleotide, char CIGAR_flag, const std::string& ref_name, FASTA_CONST FastaFile& fasta)
 	{
 		int idx = GetGenotypeIdxBinSearch(sam_pos);
-		if (idx == genotypes.size()) {
+		if (idx == static_cast<int>(genotypes.size())) {
 			GenotypeRec new_rec = { static_cast<uint32_t>(sam_pos), GetNucleotideFlag(nucleotide) };
 			new_rec.SetCIGAR(CIGAR_flag, ref_name, fasta);
 			genotypes.push_back(new_rec);
 			return;
 		}
 
-		if (genotypes[idx].pos == sam_pos) {
+		if (static_cast<int>(genotypes[idx].pos) == sam_pos) {
 			genotypes[idx].AddNucleotide(nucleotide);
 			genotypes[idx].SetCIGAR(CIGAR_flag, ref_name, fasta);
 			return;
@@ -210,14 +200,14 @@ public:
 
 		// Move to insert_idx, extend if needed.
 		for (int i = 0; i < insert_idx; ++i, ++idx) {
-			if (static_cast<int>(inserts.size()) == idx || inserts[idx].pos != sam_pos) {
+			if (static_cast<int>(inserts.size()) == idx || static_cast<int>(inserts[idx].pos) != sam_pos) {
 				GenotypeRec new_rec = { static_cast<uint32_t>(sam_pos), 0 };
 				inserts.insert(inserts.begin() + idx, new_rec);
 			}
 		}
 
 		// Check last index, and extend if needed.
-		if (static_cast<int>(inserts.size()) == idx || inserts[idx].pos != sam_pos) {
+		if (static_cast<int>(inserts.size()) == idx || static_cast<int>(inserts[idx].pos) != sam_pos) {
 			GenotypeRec new_rec = { static_cast<uint32_t>(sam_pos), 0 };
 			inserts.insert(inserts.begin() + idx, new_rec);
 		}
@@ -269,18 +259,17 @@ public:
 	{
 		// Dump genotypes.
 		for (unsigned i = 0; i < genotypes.size(); ++i) {
-			const GenotypeRec rec = genotypes[i];
+			const GenotypeRec& rec = genotypes[i];
 			if (!rec.IsBiallelic())
 				continue;						// Process only bi-allelic loci.
 
-												// Find continuous segment length.
-			int pos = rec.pos + 1;
-			int len = 1;
+			// Find continuous segment length.
+			uint32_t len = 1;
 			for (unsigned j = i + 1; j < genotypes.size(); ++j) {
-				if (genotypes[j].pos != pos || !rec.IsBiallelic())
+				if (genotypes[j].pos != rec.pos + len || !genotypes[j].IsBiallelic())
 					break;
 
-				++len; ++pos;
+				++len;
 			}
 
 			// Write to file.
@@ -288,24 +277,36 @@ public:
 			out_file.write(reinterpret_cast<const char*>(&len), sizeof(len));
 			int bit_pos = 0;
 			uint32_t buff = 0;
-			for (unsigned j = i; j < i + len; ++j) {
+			int num_writes = 0;
+			for (unsigned j = 0; j < len; ++j) {
 				if (bit_pos == BUFFER_BITS) {
 					// Flush buffer.
 					out_file.write(reinterpret_cast<const char*>(&buff), sizeof(buff));
 					bit_pos = buff = 0;
+					++num_writes;
 				}
 
-				int geno = genotypes[j].GetGenotype() << bit_pos;
+				int geno = genotypes[i + j].GetGenotype() << bit_pos;
 				buff |= geno;
 				bit_pos += BITS_PER_GENOTYPE;
 			}
 
 			// Flush last bytes.
-			if (bit_pos)
+			if (bit_pos) {
 				out_file.write(reinterpret_cast<const char*>(&buff), sizeof(buff));
+				++num_writes;
+			}
+
+			if (num_writes != ((len - 1 + 16) / 16))
+				logger << Time << warning << "------ num_writes:" << num_writes
+					<< "   len:" << len << std::endl;
 
 			i += len - 1;			// Advance index.
 		}
+
+		const uint32_t EOF_POS = 0;
+		out_file.write(reinterpret_cast<const char*>(&EOF_POS), sizeof(EOF_POS));
+		out_file.write(reinterpret_cast<const char*>(&EOF_POS), sizeof(EOF_POS));
 	}
 
 	void Dump(std::ostream& out_file) const
@@ -377,11 +378,9 @@ private:
 std::string GetHumanSize(long long sz);
 
 void WriteToGenotype(const std::string& sam_path, const std::string& out_path,
-#ifndef USE_LAZY_GET_NUCLEOTIDE
-	const FastaFile& fasta
-#else
-	FastaFile& fasta
-#endif
-);
+		FASTA_CONST FastaFile& fasta);
+
+void WriteBAMToGenotype(const std::string& bam_path, const std::string& out_path,
+		FASTA_CONST FastaFile& fasta);
 
 #endif

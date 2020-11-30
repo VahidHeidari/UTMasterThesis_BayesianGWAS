@@ -179,7 +179,7 @@ static void TestSAMToGenotypeCompressed()
 static void DumpFastaFile()
 {
 	//const std::string input_path = "D:\\Datasets\\Programs\\Mapper\\SAMSpecSamples\\SAM_BAM_spec.fasta";
-	const std::string input_path = "D:\\Datasets\\hg38-STAR_sample\\References\\Homo_sapiens.GRCh38.dna.primary_assembly.fa";
+	const std::string input_path = "D:\\Datasets\\Homo_sapiens.GRCh38.dna.primary_assembly.fa";
 	const std::string output_path = input_path + ".bin";
 
 	FastaFile fasta;
@@ -194,10 +194,94 @@ static void DumpFastaFile()
 
 
 
+inline static std::string ReadRefName(std::ifstream& f)
+{
+	std::string rname;
+	char ch;
+	while (true) {
+		f.read(&ch, 1);
+		if (ch == '\0')
+			break;
+
+		rname += ch;
+	}
+	return rname;
+}
+
+inline static std::ifstream::pos_type GetFileSize(const std::string& file_path)
+{
+	std::ifstream f(file_path, std::ios_base::in | std::ios_base::out | std::ios_base::binary);
+	if (!f.is_open())
+		return std::fstream::pos_type(-1);
+
+	f.seekg(0, std::ios_base::end);
+	return f.tellg();
+}
+
+static void ConvertCompressedGTPToTextGTP(const std::string& comp_gtp_path,
+		const std::string& out_path)
+{
+	std::ifstream gtp_file(comp_gtp_path, std::ios_base::in | std::ios_base::binary);
+	if (!gtp_file.is_open()) {
+		logger << Time << "Could not open gtp file!" << std::endl;
+		return;
+	}
+
+	std::ofstream gtp_out_file(out_path);
+	if (!gtp_out_file.is_open()) {
+		logger << Time << "Could not open gtp output file!" << std::endl;
+		return;
+	}
+
+	std::ifstream::pos_type gtp_file_size = GetFileSize(comp_gtp_path);
+	std::string rname;
+	while (gtp_file.tellg() < gtp_file_size) {
+		rname = ReadRefName(gtp_file);
+		logger << Time << "UnitTests ReadCompressedGenotype() -> ref name is: " << rname
+			<< "    " << gtp_file.tellg() << std::endl;
+		gtp_out_file << ">>> " << rname << std::endl;
+
+		uint32_t num_genotypes, num_inserts;
+		gtp_file.read(reinterpret_cast<char*>(&num_genotypes), sizeof(num_genotypes));
+		gtp_file.read(reinterpret_cast<char*>(&num_inserts), sizeof(num_inserts));
+		logger << Time  << "num geno: " << num_genotypes << std::endl;
+		logger << Time  << "num insr: " << num_inserts << std::endl;
+
+		for (unsigned i = 0; i < num_genotypes; ++i) {
+			uint32_t pos, len;
+			gtp_file.read(reinterpret_cast<char*>(&pos), sizeof(pos));
+			gtp_file.read(reinterpret_cast<char*>(&len), sizeof(len));
+			//logger << Time  << "pos:" << pos << "     len:" << len << std::endl;
+			int bit_num = 0;
+			uint32_t buff;
+			gtp_file.read(reinterpret_cast<char*>(&buff), sizeof(buff));
+			for (unsigned j = 0; j < len; ++j) {
+				if (bit_num == BUFFER_BITS) {
+					bit_num = 0;
+					gtp_file.read(reinterpret_cast<char*>(&buff), sizeof(buff));
+				}
+				//logger << ' ' << pos + j << ' ' << "ACTG"[((buff >> bit_num) & GENOTYPE_MASK)] << std::endl;
+				gtp_out_file <<  ' ' << pos + j << ' ' << "ACTG"[((buff >> bit_num) & GENOTYPE_MASK)] << std::endl;
+				bit_num += BITS_PER_GENOTYPE;
+			}
+			//logger << std::endl;
+			i += len;
+		}
+		//logger << std::endl;
+		logger << Time << "Try break" << std::endl;
+		break;
+	}
+}
+
+
+
 int main()
 {
-	TestBinarySearch();
-	TestSAMToGenotypeCompressed();
+	//TestBinarySearch();
+	//TestSAMToGenotypeCompressed();
 	//DumpFastaFile();
+	ConvertCompressedGTPToTextGTP(
+			"D:\\Datasets\\GSE68086\\CRC-sorted\\SRR1982618-sorted.bam.gtp",
+			"D:\\Datasets\\GSE68086\\CRC-sorted\\SRR1982618-sorted.bam.gtp.txt");
 	return 0;
 }

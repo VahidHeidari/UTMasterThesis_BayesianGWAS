@@ -38,13 +38,18 @@ static Log& operator<<(Log& l, std::ostream& (*fp)(std::ostream&))
 }
 
 template <>
-static Log& operator<< <TimeTag>(Log& l, const TimeTag& t)
+Log& operator<< <TimeTag>(Log& l, const TimeTag& /*t*/)
 {
-	enum { TIME_BUFF_SIZE = 30 };
-
 	time_t start_time = time(nullptr);
+
+#if defined __linux__ || defined __CYGWIN__
+	char* buff = ctime(&start_time);
+#else
+	enum { TIME_BUFF_SIZE = 30 };
 	char buff[TIME_BUFF_SIZE];
 	ctime_s(buff, TIME_BUFF_SIZE, &start_time);
+#endif
+
 	std::string time_str(buff);
 	if (time_str[time_str.size() - 1] == '\n')
 		time_str = time_str.substr(0, time_str.size() - 1);
@@ -53,7 +58,7 @@ static Log& operator<< <TimeTag>(Log& l, const TimeTag& t)
 }
 
 template <>
-static Log& operator<< <Warning>(Log& l, const Warning& w)
+Log& operator<< <Warning>(Log& l, const Warning& /*w*/)
 {
 	l << "WARNING: ";
 	return l;
