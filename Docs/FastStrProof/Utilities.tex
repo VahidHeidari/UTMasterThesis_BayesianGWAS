@@ -1,0 +1,118 @@
+﻿% Indentation
+\newcommand{\INDSTATE}[1][1]{\STATE\hspace{#1\algorithmicindent}}
+
+
+% Integral
+\newcommand{\intg}[2]{ \ensuremath{\int #1 \,d#2} }
+\newcommand{\dint}[3]{ \ensuremath{\int_{#1} #2 \,d#3} }
+
+
+% Kullback-Libler divergence discrete mode
+\newcommand{\KLDiv}[2]{ \ensuremath{ \operatorname{KL} \left[ #1 \parallel #2 \right] } }
+\newcommand{\KLd}[3]{
+	\ensuremath{
+		\sum_{#3} #1 (#3) \log \frac{#1(#3)}{#2(#3)}
+	}		% ensuremath
+}		% newcommand
+\newcommand{\KLdDef}[3]{ \ensuremath{ \KLDiv{#1}{#2} =\KLd{#1}{#2}{#3} } }
+
+
+% Kullback-Libler divergence continuse mode
+\newcommand{\KLc}[3]{
+	\ensuremath{
+		\dint{#3}{#1 (#3) \log \frac{#1(#3)}{#2(#3)}}{#3}
+	}		% ensuremath
+}		% newcommand
+\newcommand{\KLcDef}[3]{ \ensuremath{ \KLDiv{#1}{#2} =\KLc{#1}{#2}{#3} } }
+
+
+% Probability
+\newcommand{\Prb}[2]{ \ensuremath #1 ( #2 ) }
+\newcommand{\Prior}[1] { \Prb{\pi}{#1}}
+\newcommand{\Prob}[1]{ \ensuremath{ \Pr ( #1 ) } }
+\newcommand{\CProb}[2]{ \ensuremath{ \Pr ( #1 \mid #2 ) } }
+\newcommand{\HProb}[2]{ \ensuremath{ \Pr_{#1} ( #2 ) } }
+\newcommand{\HCProb}[3]{ \ensuremath{ \Pr_{#1} ( #2 \mid #3 ) } }
+
+
+% Variational probabilities
+\newcommand{\TrueCProb}[2]{ \ensuremath{ p ( #1 \mid #2 ) } }				% True means: NOT approximated posterior in VB
+\newcommand{\TrueProb}[1]{ \ensuremath{ p ( #1 ) } }
+\newcommand{\StarProb}[1]{ \ensuremath{ q^* ( #1 ) } }
+\newcommand{\StarCProb}[2]{ \ensuremath{ q^* ( #1 \mid #2 ) } }
+\newcommand{\BreveCProb}[2]{ \ensuremath{ q ( #1 \mid #2 ) } }
+
+\newcommand{\AppProb}[1]{ \ensuremath{ q ( #1 ) } }
+\newcommand{\AppCProb}[2]{ \ensuremath{ q ( #1 \mid #2 ) } }
+
+
+% Special functions
+\newcommand{\BetaFunc}[2]{ \mathcal{B} ( #1, #2 ) }
+\newcommand{\DigammaFunc}[1]{ \ensuremath { \psi ( #1 ) } }
+\newcommand{\GammaFunc}[1]{ \ensuremath { \Gamma ( #1 ) } }
+
+
+% Indicator
+\usepackage{stmaryrd}
+\newcommand{\Indic}[1]{ \ensuremath { \operatorname{I} ( #1 ) } }
+
+
+% Pitman-Yor process
+\newcommand{\PitmanYor}[3]{ \ensuremath { \operatorname{PY} ( #1, #2, #3 ) } }
+
+
+% VB
+\newcommand{\Dns}[2]{ \ensuremath{ #1 ( #2 ) } }
+\newcommand{\CDns}[3]{ \ensuremath{ #1 ( #2 | #3 ) } }
+\newcommand{\Exp}[2]{ \ensuremath { \mathbb{E}_{#1} \left[ #2 \right] } }
+\newcommand{\KL}[2]{ \KLDiv{#1}{#2} }
+
+\newcommand{\EMLike}{{شبه}-\lr{EM}}
+\newcommand{\VBApprox}{\lr{VB}-{تقریب} }
+\newcommand{\VBMargin}{\lr{VB}-{حاشیه‌ای} }
+\newcommand{\VBMargins}{\lr{VB}-{حاشیه‌ای‌ها} }
+\newcommand{\VBMoment}{\lr{VB}-{گشتاور}}
+\newcommand{\VBMoments}{\lr{VB}-{گشتاورها}}
+
+
+% Distributions
+\newcommand{\BetaDist}[2]{ \mathcal{B}eta ( #1, #2 ) }
+\newcommand{\Bin}[1]{ \mathcal{B}inomial ( #1 ) }
+\newcommand{\Dir}[1]{ \mathcal{D}irichlet ( #1 ) }
+\newcommand{\GammaDist}[2]{ \mathcal{G}amma ( #1, #2 ) }
+\newcommand{\Mult}[1]{ \mathcal{M}ultinomial ( #1 ) }
+\newcommand{\Norm}[2]{ \mathcal{N}ormal ( #1, #2 ) }
+\newcommand{\Pois}[1]{ \mathcal{P}oisson ( #1 ) }
+\newcommand{\Unif}[2]{ \mathcal{U}niform ( #1, #2 ) }
+
+
+% Utility commands
+\newcommand{\HrefFootnote}[2]{ \href{#1}{#2} \LTRfootnote{ \url{#1} } }
+\newcommand{\GSEDataset}{ \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE68086}{ \lr{GSE68086} } }
+
+
+% Tex commands
+%\twocolumnfootnotes							% Tow column footnotes.
+\newtheorem*{theorem*}{قضیه}				% Definition of unnumbered theorem
+\newtheorem{theorem}{قضیه}					% Definition of unnumbered theorem
+\newtheorem*{remark*}{ملاحظه}				% Definition of unnumbered remark
+
+
+% More packages used in this thesis
+\usepackage{nccmath}
+%\usepackage{geometry}						% Alignment of Q in chapter 3
+\usepackage{pgfplots}						% For drawing plots and axis environment
+\usepackage{cancel}							% For cancelint out in formulas
+%\usepackage{indentfirst}					% Indentation first paragrahs
+
+
+% Tikz library and graphics
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes}
+\usetikzlibrary{arrows}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{calc}
+\usetikzlibrary{fit}
+

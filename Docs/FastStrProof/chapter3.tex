@@ -1,0 +1,72 @@
+﻿% !TeX root=FastStrProof.tex
+
+\section{لگاریتم احتمال توأم پارامترها}
+\label{sec:VBParamsUpdating}
+
+لگاریتم احتمال توأم پارامترها به صورت زیر است:
+
+\begin{align}
+\ln \TrueProb{X, Z, Q, P} &= \ln \TrueCProb{X}{Z, P}
+	+ \ln \TrueCProb{Z}{Q}
+	+ \ln \TrueProb{Q}
+	+ \ln \TrueProb{P}
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	&= \ln \TrueCProb{X_{nl}=0}{Z_{nl}^a=k, Z_{nl}^b=k', P_{l \bullet}}	+						\nonumber \\
+			& \qquad + \ln \TrueCProb{X_{nl}=1}{Z_{nl}^a=k, Z_{nl}^b=k', P_{l \bullet}} +		\nonumber \\
+			& \qquad + \ln \TrueCProb{X_{nl}=2}{Z_{nl}^a=k, Z_{nl}^b=k', P_{l \bullet}} +		\nonumber \\
+		& \quad + \ln \TrueCProb{Z_{nl}=k}{Q_{nk}} + \ln \TrueCProb{Z_{nl}=k'}{Q_{nk'}} +		\nonumber \\
+		& \quad + \ln \Dir{Q_{n}; \alpha_n} +													\nonumber \\
+		& \quad + \ln \BetaDist{P_{lk}; \beta}{\gamma}
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	&= \sum_{nlk} \Big( \Big.
+	\Indic{X_{nl} = 0} \left( \Indic{Z_{nl}^a = k} \ln (1 - P_{lk})
+			+ \Indic{Z_{nl}^b = k'} \ln (1 - P_{lk'}) \right) +												\nonumber \\
+		& \qquad + \Indic{X_{nl} = 1} \Big(
+			\left( \Indic{Z_{nl}^a=k} \ln P_{lk} + \Indic{Z_{nl}^b=k'} \ln (1 - P_{lk'}) \right) +			\nonumber \\
+		& \qquad \quad + \left( \Indic{Z_{nl}^a=k} \ln (1 - P_{lk}) + \Indic{Z_{nl}^b=k'} \ln P_{lk} \right)
+		\Big) +																								\nonumber \\
+		& \qquad + \Indic{X_{nl} = 2} \left( \Indic{Z_{nl}^a = k} \ln P_{lk}
+			+ \Indic{Z_{nl}^b = k'} \ln P_{lk'} \right)
+\Big. \Big) +
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	& \quad + \sum_{nlk} \Indic{Z_{nl}^a = k} \ln Q_{nk}
+		+ \sum_{nlk} \Indic{Z_{nl}^b = k'} \ln Q_{nk'} +
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	& \quad + \sum_n \left\{
+		\ln \GammaFunc{\alpha_{n0}}
+		- \sum_{k} \ln \GammaFunc{\alpha_{nk}}
+		+ \sum_{k} (\alpha_{nk} - 1) \ln Q_{nk}
+	\right\} +
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	& \quad + \sum_{lk} - \ln \BetaFunc{\beta}{\gamma}
+	+ (\beta - 1) \ln P_{lk}
+	+ (\gamma - 1) \ln (1 - P_{lk}).
+\label{eq:LogJointProb}
+\end{align}
+
+\newpage
+توزیع‌های تغییراتی نیز به صورت زیر هستند:
+
+
+\begin{align*}
+\ln \AppProb{Z, Q, P} &= \ln \AppProb{Z}
+	+ \ln \AppProb{Q}
+	+ \ln \AppProb{P}
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	&= \ln \theta_n^*
+		+ \ln \Dir{Q_n; \alpha_n^*}
+		+ \ln \BetaDist{\beta^*}{\gamma^*}
+\\ \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	&= \sum_{nk} \Indic{Z_{nl}^a=k} \ln \theta_{nk}^*
+		+ \sum_{nk} \Indic{Z_{nl}^b=k'} \ln \theta_{nk'}^*							\\
+	& \quad + \sum_n \left\{
+		\ln \GammaFunc{\alpha_{n0}^*}
+		- \sum_k \ln \GammaFunc{\alpha_{nk}^*}
+		+ \sum_k (\alpha_{nk}^* - 1) \ln Q_{nk}
+	\right\} +																		\\
+	& \quad + \sum_{lk} \left\{
+		- \ln \BetaFunc{\beta_{lk}^*}{\gamma_{lk}^*}
+		+ (\beta_{lk}^* - 1) \ln P_{lk}
+		+ (\gamma_{lk}^* - 1) \ln (1 - P_{lk})
+	\right\}.
+\end{align*}

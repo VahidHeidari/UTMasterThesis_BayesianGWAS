@@ -1,0 +1,124 @@
+﻿% !TeX root=FastStrProof.tex
+
+\section{اثبات قضیه بیز تغییراتی با استفاده از تقریب میدان میانگین}
+\label{app:VBProof}
+
+ایده‌ی اصلی روش‌های بیز تغییراتی (به اختصار
+\lr{VB})
+تقریب‌زدن
+$\TrueCProb{\theta}{X}$
+با تقریب‌زدن عبارات حاشیه‌ای به صورت زیر است
+\cite{VBMethodsInSignal}:
+
+
+\begin{equation*}
+\TrueCProb{\theta}{X} \approx
+	\BreveCProb{\theta}{X} =
+		\BreveCProb{\theta_1}{X}
+		\BreveCProb{\theta_2}{X}
+\end{equation*}
+
+
+در واقع تقریب‌زدن باعث می‌شود زیر مجموعه‌هایی از پارامترها به صورت مستقل
+از هم در نظر گرفته شوند که توسط طراح الگوریتم به صورت افرازهایی از
+$\theta$
+انتخاب شده‌اند. تقریب بهینه با کمینه کردن واگرایی
+$\BreveCProb{\theta}{X}$
+نسبت به
+$\TrueCProb{\theta}{X}$
+با استفاده از ملاک واگرایی
+KL
+بدست می‌آید:
+
+
+\begin{equation}
+\label{eq:KLDfunc}
+\StarCProb{\theta}{X} = \underset{
+	\BreveCProb{\theta_1}{\centerdot}
+	\BreveCProb{\theta_2}{\centerdot}
+}{\arg \min} \KL{
+		\BreveCProb{\theta_1}{\centerdot}
+		\BreveCProb{\theta_2}{\centerdot}
+	}{
+		\TrueCProb{\theta}{X}
+	}
+\end{equation}
+
+
+با بهینه‌سازی فرمول
+\eqref{eq:KLDfunc}
+، به توابع
+$\BreveCProb{\theta_1}{X}$
+و
+$\BreveCProb{\theta_2}{X}$
+با فرم شناخته‌شده‌ای خواهیم رسید که به آن‌ها حاشیه‌ای‌های
+VB
+گفته می‌شود. در روش‌های
+VB
+خانواده‌ای از توزیع‌ها در نظر گرفته می‌شود که به طور تقریبی به حاشیه‌ای‌های
+ضرب شده در هم نزدیک باشد. روش‌های
+VB
+توازنی بین پیچیدگی محاسبات و دقت تقریب برقرار می‌کنند.
+
+
+
+\begin{theorem}[بیز تغییراتی]
+\label{thm:VarBayeseTheorem}
+\cite{VBMethodsInSignal}
+گیریم
+$\TrueCProb{\theta}{X}$
+پسینی پارامتر چند متغیره‌ی
+$\theta$
+باشد که به
+$K$
+زیر بردار به صورت
+$\theta = \left[ \theta_1, \theta_2, \dots \theta_K \right]$
+افراز شده باشد و
+$\BreveCProb{\theta}{X}$
+یک توزیع تقریبی محدود شده به توزیع‌های مستقل شرطی برای
+$\theta_1, \theta_2, \dots, \theta_K$
+به صورت زیر باشد:
+
+
+\begin{gather}
+\BreveCProb{\theta}{X} = \BreveCProb{\theta_1, \theta_2, \dots, \theta_K}{X} =
+	\prod_{i=1}^{K} \BreveCProb{\theta_i}{X}					\nonumber \\
+%%%%%%%%%%%%%%%%%%%%
+\intertext{آنگاه کمینه‌
+$KLD_{VB}$:}													\nonumber \\
+%%%%%%%%%%%%%%%%%%%%
+\StarCProb{\theta}{X} = \underset{
+	\AppProb{ \cdot }
+}{
+	\arg \min
+} \KLDiv{\BreveCProb{\theta}{X}}{\TrueCProb{\theta}{X}}			\nonumber \\
+%%%%%%%%%%%%%%%%%%%%
+\intertext{از عبارت زیر بدست می‌آید:}							\nonumber \\
+%%%%%%%%%%%%%%%%%%%%
+\StarCProb{\theta_i}{X} \propto
+	\exp \left(
+		\Exp{\StarCProb{\theta_{/i}}{X}}{\ln \Dns{f}{\theta, X}}
+	\right), \qquad i = 1, \dots K
+\label{eq:VBMargins}
+\end{gather}
+
+
+که در آن
+$\theta_{/i}$
+مجموعه‌ی پارامترهای مکمل
+$\theta_i$
+در
+$\theta$
+و
+$\StarCProb{\theta_{/i}}{X} =
+	\prod_{j = 1, j \neq i}^{K} \StarCProb{\theta_j}{X}
+$
+تعریف می‌شوند. به
+$\StarCProb{\theta}{X}$،
+\VBApprox
+و به
+$\StarCProb{\theta_i}{X}$
+نیز
+\VBMargin
+ها می‌گوییم.
+\end{theorem}

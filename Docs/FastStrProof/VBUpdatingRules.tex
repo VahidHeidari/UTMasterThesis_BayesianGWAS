@@ -1,0 +1,346 @@
+﻿% !TeX root=FastStrProof.tex
+
+\section{اثبات قواعد به‌روزرسانی پارامترهای بیز تغییراتی}
+\label{app:VBUpdatingRules}
+
+
+در این بخش با استفاده از قضیه‌ی
+\ref{thm:VarBayeseTheorem}
+و رابطه‌ی
+\eqref{eq:LogJointProb}
+قواعد به‌روز‌رسانی را بدست می‌آوریم.
+
+
+%\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{پارامتر
+$Q$}
+
+\begin{proof}
+\begin{align*}
+\ln \StarProb{Q} &= \Exp{\StarProb{Z} \StarProb{P}}{\ln \TrueProb{X, Z, Q, P}} + C
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	&= \mathbb{E}_{\StarProb{Z} \StarProb{P}} \Bigg[ \sum_{nlk} \Big( \Big.
+		\Indic{X_{nl} = 0} \left( \Indic{Z_{nl}^a = k} \ln (1 - P_{lk})
+				+ \Indic{Z_{nl}^b = k'} \ln (1 - P_{lk'}) \right) +												\nonumber \\
+			& \qquad + \Indic{X_{nl} = 1} \Big(
+				\left( \Indic{Z_{nl}^a=k} \ln P_{lk} + \Indic{Z_{nl}^b=k'} \ln (1 - P_{lk'}) \right) +			\nonumber \\
+			& \qquad \quad + \left( \Indic{Z_{nl}^a=k} \ln (1 - P_{lk}) + \Indic{Z_{nl}^b=k'} \ln P_{lk} \right)
+			\Big) +																								\nonumber \\
+			& \qquad + \Indic{X_{nl} = 2} \left( \Indic{Z_{nl}^a = k} \ln P_{lk}
+				+ \Indic{Z_{nl}^b = k'} \ln P_{lk'} \right)
+	\Big. \Big) +
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		& \quad + \sum_{nlk} \Indic{Z_{nl}^a = k} \ln Q_{nk}
+			+ \sum_{nlk} \Indic{Z_{nl}^b = k'} \ln Q_{nk'} +
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		& \quad + \sum_n \left\{
+			\ln \GammaFunc{\alpha_{n0}}
+			- \sum_{k} \ln \GammaFunc{\alpha_{nk}}
+			+ \sum_{k} (\alpha_{nk} - 1) \ln Q_{nk}
+		\right\} +
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		& \quad + \sum_{lk} - \ln \BetaFunc{\beta}{\gamma}
+		+ (\beta - 1) \ln P_{lk}
+		+ (\gamma - 1) \ln (1 - P_{lk})
+	\Bigg] + C
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	&= \mathbb{E}_{\StarProb{Z} \StarProb{P}} \Bigg[ \sum_{nlk} \Big( \Big.
+		\Indic{X_{nl} = 0} \left( \Indic{Z_{nl}^a = k} \ln (1 - P_{lk})
+				+ \Indic{Z_{nl}^b = k'} \ln (1 - P_{lk'}) \right) +												\nonumber \\
+			& \qquad + \Indic{X_{nl} = 1} \Big(
+				\left( \Indic{Z_{nl}^a=k} \ln P_{lk} + \Indic{Z_{nl}^b=k'} \ln (1 - P_{lk'}) \right) +			\nonumber \\
+			& \qquad \quad + \left( \Indic{Z_{nl}^a=k} \ln (1 - P_{lk}) + \Indic{Z_{nl}^b=k'} \ln P_{lk} \right)
+			\Big) +																								\nonumber \\
+			& \qquad + \Indic{X_{nl} = 2} \left( \Indic{Z_{nl}^a = k} \ln P_{lk}
+				+ \Indic{Z_{nl}^b = k'} \ln P_{lk'} \right)
+	\Big. \Big) \Bigg] +
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		& \quad + \Exp{\StarProb{Z} \StarProb{P}}{
+			\sum_{nlk} \Indic{Z_{nl}^a = k} \ln Q_{nk}
+			+ \sum_{nlk} \Indic{Z_{nl}^b = k'} \ln Q_{nk'}
+		} +
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		& \quad + \Exp{\StarProb{Z} \StarProb{P}}{
+			\sum_n \left\{
+				\ln \GammaFunc{\alpha_{n0}}
+				- \sum_{k} \ln \GammaFunc{\alpha_{nk}}
+				+ \sum_{k} (\alpha_{nk} - 1) \ln Q_{nk}
+			\right\}
+		}+
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		& \quad + \Exp{\StarProb{Z} \StarProb{P}}{
+			\sum_{lk} - \ln \BetaFunc{\beta}{\gamma}
+			+ (\beta - 1) \ln P_{lk}
+			+ (\gamma - 1) \ln (1 - P_{lk})
+		} + C
+\end{align*}
+%\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%--\\
+%--\\
+%--\\
+%\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+عباراتی که به
+$Q_{nk}$
+بستگی ندارند ثابت در نظر می‌گیریم:
+\begin{align*}
+	&= \Exp{\StarProb{Z} \StarProb{P}}{
+		\sum_l \Indic{Z_{nl}^a=k} \ln Q_{nk}
+		+ \Indic{Z_{nl}^b=k} \ln Q_{nk}
+		+ (\alpha_{nk} - 1) \ln Q_{nk}
+	} + C_2
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	& \quad = \Exp{\StarProb{Z}}{\sum_l \Indic{Z_{nl}=k}} \ln Q_{nk}
+	+ \Exp{\StarProb{Z}}{\sum_l \Indic{Z_{nl}=k}} \ln Q_{nk} + \\
+	& \qquad + (\alpha_{nk} - 1) \ln Q_{nk} + C_2
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	& \quad = \sum_l {\theta^*}_{nlk}^a \ln Q_{nk}
+		+ \sum_l {\theta^*}_{nlk}^b \ln Q_{nk}
+		+ (\alpha_{nk} - 1) \ln Q_{nk} + C_2
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	& \quad = (\alpha_{nk} + \sum_l ({\theta^*}_{nlk}^a + {\theta^*}_{nlk}^b) - 1) \ln Q_{nk} + C_2
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\intertext{می‌توان دید کرنل دیریکله است، پس:}
+	\StarProb{Q_n} &= \Dir{\alpha_{nk} + \sum_l ({\theta^*}_{nlk}^a + {\theta^*}_{nlk}^b})
+\intertext{و نتیجه می‌گیریم:}
+	\alpha_{nk}^* &= \alpha_{nk} + \sum_l ({\theta^*}_{nlk}^a + {\theta^*}_{nlk}^b).
+\end{align*}
+\end{proof}
+
+
+
+
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{پارامتر
+$P$}
+
+\begin{proof}
+\begin{align*}
+\ln \StarProb{P} &= \Exp{\StarProb{Z} \StarProb{Q}}{\ln \TrueProb{X, Z, Q, P}} + C
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	&= \mathbb{E}_{\StarProb{Z} \StarProb{Q}} \Bigg[ \sum_{nlk} \Big( \Big.
+		\Indic{X_{nl} = 0} \left( \Indic{Z_{nl}^a = k} \ln (1 - P_{lk})
+				+ \Indic{Z_{nl}^b = k'} \ln (1 - P_{lk'}) \right) +												\nonumber \\
+			& \qquad + \Indic{X_{nl} = 1} \Big(
+				\left( \Indic{Z_{nl}^a=k} \ln P_{lk} + \Indic{Z_{nl}^b=k'} \ln (1 - P_{lk'}) \right) +			\nonumber \\
+			& \qquad \quad + \left( \Indic{Z_{nl}^a=k} \ln (1 - P_{lk}) + \Indic{Z_{nl}^b=k'} \ln P_{lk} \right)
+			\Big) +																								\nonumber \\
+			& \qquad + \Indic{X_{nl} = 2} \left( \Indic{Z_{nl}^a = k} \ln P_{lk}
+				+ \Indic{Z_{nl}^b = k'} \ln P_{lk'} \right)
+	\Big. \Big) +
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		& \quad + \sum_{nlk} \Indic{Z_{nl}^a = k} \ln Q_{nk}
+			+ \sum_{nlk} \Indic{Z_{nl}^b = k'} \ln Q_{nk'} +
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		& \quad + \sum_n \left\{
+			\ln \GammaFunc{\alpha_{n0}}
+			- \sum_{k} \ln \GammaFunc{\alpha_{nk}}
+			+ \sum_{k} (\alpha_{nk} - 1) \ln Q_{nk}
+		\right\} +
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		& \quad + \sum_{lk} - \ln \BetaFunc{\beta}{\gamma}
+		+ (\beta - 1) \ln P_{lk}
+		+ (\gamma - 1) \ln (1 - P_{lk})
+	\Bigg] + C
+\end{align*}
+عباراتی که به
+$P_{lk}$
+بستگی ندارند به عنوان ثابت در نظر می‌گیریم:
+\begin{align*}
+%\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	&= \mathbb{E}_{\StarProb{Z} \StarProb{Q}} \Big[
+		\Indic{X_{nl} = 0} \left( \Indic{Z_{nl}^a = k} \ln (1 - P_{lk}) + \Indic{Z_{nl}^b=k} \ln (1 - P_{lk}) \right) +			\nonumber \\
+		& \qquad + \Indic{X_{nl}=1} (\Indic{Z_{nl}^a=k} \ln P_{lk} + \Indic{Z_{nl}^b=k} \ln (1 - P_{lk'})			\\
+		& \qquad + \Indic{X_{nl}=2} (\Indic{Z_{nl}^a=k} \ln P_{lk} + \Indic{Z_{nl}^b=k} \ln P_{lk}) +				\\
+		& \quad + (\beta - 1) \ln P_{lk} + (\gamma - 1) \ln (1 - P_{lk}) +
+	\Big] + C_2
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	&= \Indic{X_{nl}=0} ( \Exp{\StarProb{Z}}{\Indic{Z_{nl}^a=k}} \ln (1 - P_{lk})
+			+ \Exp{\StarProb{Z}}{\Indic{Z_{nl}^a=k}} \ln (1 - P_{lk}) ) + 								\\
+		& \quad + \Indic{X_{nl}=1} (\Exp{\StarProb{Z}}{\Indic{Z_{nl}^a=k}} \ln P_{lk} + \Exp{\StarProb{Z}}{\Indic{Z_{nl}^b=k}} \ln (1 - P_{lk}))		\\
+		& \quad + \Indic{X_{nl}=2} (\Exp{\StarProb{Z}}{\Indic{Z_{nl}^a=k}} \ln P_{lk} + \Exp{\StarProb{Z}}{\Indic{Z_{nl}^b=k}} \ln P_{lk}) +	\\
+		& \quad + (\beta - 1) \ln P_{lk} + (\gamma - 1) \ln (1 - P_{lk}) + C_2
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	&= \Indic{X_{nl}=0} ( {\theta^*}_{nlk}^a \ln (1 - P_{lk}) + {\theta^*}_{nlk}^b \ln (1 - P_{lk}) ) +		\\
+		& \quad + \Indic{X_{nlk}=1} ({\theta^*}_{nlk}^a \ln P_{lk} + {\theta^*}_{nlk}^b \ln (1 - P_{lk})) + \\
+		& \quad + ({\theta^*}_{nlk}^a + {\theta^*}_{nlk}^b) \Indic{X_{nl}=2} \ln P_{lk} +	\\
+		& \quad + (\beta - 1) \ln P_{lk} + (\gamma - 1) \ln (1 - P_{lk}) + C_2
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	&= (\Indic{X_{nl}=1} {\theta^*}_{nlk}^a
+			+ \Indic{X_{nl}=2} ({\theta^*}_{nl}^a + {\theta^*}_{nlk}^b)
+			+ \beta - 1) \ln P_{lk} +		\\
+		& \quad + (\Indic{X_{nl}=1} {\theta^*}_{nlk}^b
+			+  \Indic{X_{nl}=0} ({\theta^*}_{nlk}^a + {\theta^*}_{nlk}^b)
+			+ \gamma - 1) \ln (1 - P_{lk}) + C_2
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\intertext{می‌توان دید کرنل بتا است، پس:}
+	\StarProb{P_{lk}} &= \BetaDist{\beta_{lk}^*}{\gamma_{lk}^*}
+\intertext{و نتیجه می‌گیریم:}
+	\beta_{lk}^* &= \beta + \sum_{n} \left(
+		\Indic{X_{nl}=1} {\theta^*}_{nl}^a
+		+ \Indic{X_{nl}=2} ({\theta^*}_{nlk}^a + {\theta^*}_{nlk}^b)
+	\right)
+\\ %%%%%%%%%%%%%%%%%%%%
+	\gamma_{lk}^* &= \gamma + \sum_{n} \left(
+		\Indic{X_{nl}=1} {\theta^*}_{nlk}^b
+			+ \Indic{X_{nl}=0} ({\theta^*}_{nlk}^a + {\theta^*}_{nlk}^b)
+	\right).
+\end{align*}
+\end{proof}
+
+
+
+
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{پارامتر
+$Z$}
+
+\begin{proof}
+\begin{align*}
+\StarProb{Z} & \propto \exp \Exp{\StarProb{P} \StarProb{Q}}{ \ln \TrueProb{X, Z, Q, P}}
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	&\propto \mathbb{E}_{\StarProb{P} \StarProb{Q}} \Bigg[
+		\sum_{nlk} \Big(
+		\Indic{X_{nl} = 0} \left( \Indic{Z_{nl}^a = k} \ln (1 - P_{lk})
+				+ \Indic{Z_{nl}^b = k'} \ln (1 - P_{lk'}) \right) +												\nonumber \\
+			& \qquad + \Indic{X_{nl} = 1} \Big(
+				\left( \Indic{Z_{nl}^a=k} \ln P_{lk} + \Indic{Z_{nl}^b=k'} \ln (1 - P_{lk'}) \right) +			\nonumber \\
+			& \qquad \quad + \left( \Indic{Z_{nl}^a=k} \ln (1 - P_{lk}) + \Indic{Z_{nl}^b=k'} \ln P_{lk} \right)
+			\Big) +																								\nonumber \\
+			& \qquad + \Indic{X_{nl} = 2} \left( \Indic{Z_{nl}^a = k} \ln P_{lk}
+				+ \Indic{Z_{nl}^b = k'} \ln P_{lk'} \right)
+	\Big) +
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		& \quad + \sum_{nlk} \Indic{Z_{nl}^a = k} \ln Q_{nk}
+			+ \sum_{nlk} \Indic{Z_{nl}^b = k'} \ln Q_{nk'} +
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		& \quad + \sum_n \left\{
+			\ln \GammaFunc{\alpha_{n0}}
+			- \sum_{k} \ln \GammaFunc{\alpha_{nk}}
+			+ \sum_{k} (\alpha_{nk} - 1) \ln Q_{nk}
+		\right\} +
+\nonumber \\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		& \quad + \sum_{lk} - \ln \BetaFunc{\beta}{\gamma}
+		+ (\beta - 1) \ln P_{lk}
+		+ (\gamma - 1) \ln (1 - P_{lk})
+	\Bigg]
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\intertext{عباراتی که به
+$Z_{nl}^a$
+بستگی ندارند را ثابت در نظر می‌گیریم:}
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	& \propto \exp \Big\{
+		\Indic{X_{nl}=0} \left(
+			\Indic{Z_{nl}^a=k} \Exp{\StarProb{P}}{\ln(1 - P_{lk})}
+			+ \Indic{Z_{nl}^b=k} \Exp{\StarProb{P}}{\ln (1 - P_{lk})}
+		\right) +			\\
+		& \qquad + \Indic{X_{nl}=1} \left(
+			\Indic{Z_{nl}^a=k} \Exp{\StarProb{P}}{\ln P_{lk}}
+			+ \Indic{Z_{nl}^b=k} \Exp{\StarProb{P}}{\ln (1 - P_{lk})}
+		\right) +			\\
+		& \qquad + \Indic{X_{nl}=2} \left(
+			\Indic{Z_{nl}^a=k} \Exp{\StarProb{P}}{\ln P_{lk}}
+			+ \Indic{Z_{nl}^b=k} \Exp{\StarProb{P}}{\ln P_{lk}}
+		\right) +			\\
+		& \quad + \Indic{Z_{nl}^a=k} \Exp{\StarProb{Q}}{\ln Q_{nk}}
+			+ \Indic{Z_{nl}^b=k} \Exp{\StarProb{Q}}{\ln Q_{nk}}
+	\Big\}
+\end{align*}
+%\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{align*}
+	& \propto \exp \Big\{
+		\Indic{Z_{nl}^a=k} \big(
+			\Indic{X_{nl}=0} \Exp{\StarProb{P}}{\ln (1 - P_{lk})}
+					+ \Indic{X_{nl}=1} \Exp{\StarProb{P}}{\ln P_{lk}} +				\\
+				& \qquad + \Indic{X_{nl}=2} \Exp{\StarProb{P}}{\ln P_{lk}}
+					+ \Exp{\StarProb{Q}}{\ln Q_{nk}}
+		\big) +																		\\
+		& \quad + \Indic{Z_{nl}^b=k} \big(
+			\Indic{X_{nl}=0} \Exp{\StarProb{P}}{\ln (1 - P_{lk})}
+					+ \Indic{X_{nl}=1} \Exp{\StarProb{P}}{\ln (1 - P_{lk})} +		\\
+				& \qquad \Indic{X_{nl}=2} \Exp{\StarProb{P}}{\ln P_{lk}}
+					+ \Exp{\StarProb{Q}}{\ln Q_{nk}}
+		\big)
+	\Big\}
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	& \propto \exp \Big\{
+		\Indic{Z_{nl}^a=k} \Big(
+			\Indic{X_{nl}=0} \left( \DigammaFunc{\gamma_{lk}^*} - \DigammaFunc{\beta_{lk}^* + \gamma_{lk}^*} \right) +					\\
+			& \qquad + \Indic{X_{nl}=1} \left( \DigammaFunc{\beta_{lk}^*} - \DigammaFunc{\beta_{lk}^* + \gamma_{lk}^*} \right) +		\\
+			& \qquad + \Indic{X_{nl}=2} \left( \DigammaFunc{\beta_{lk}^*} - \DigammaFunc{\beta_{lk}^* + \gamma_{lk}^*} \right)
+				+ \DigammaFunc{\alpha_{nk}^*} - \DigammaFunc{\alpha_{n0}^*}
+		\Big) +				\\
+		& \quad + \Indic{Z_{nl}^b=k} \Big(
+			\Indic{X_{nl}=0} \left( \DigammaFunc{\gamma_{lk}^*} - \DigammaFunc{\beta_{lk}^* + \gamma_{lk}^*} \right) +					\\
+			& \qquad + \Indic{X_{nl}=1} \left( \DigammaFunc{\gamma_{lk}^*} - \DigammaFunc{\beta_{lk}^* + \gamma_{lk}^*} \right) +		\\
+			& \qquad + \Indic{X_{nl}=2} \left( \DigammaFunc{\beta_{lk}^*} - \DigammaFunc{\beta_{lk}^* + \gamma_{lk}^*} \right)
+				+ \DigammaFunc{\alpha_{nk}^*} - \DigammaFunc{\alpha_{n0}^*}
+		\Big)
+	\Big\}
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	& \propto \exp \Big\{
+		\Indic{Z_{nl}^a=k} \Big(
+			\Psi_{X_{nl}}^a
+				- \DigammaFunc{\beta_{lk}^* + \gamma_{lk}^*} \cancelto{1}{ \left(
+					\Indic{X_{nl}=0} + \Indic{X_{nl}=1} + \Indic{X_{nl}=2}
+				\right) } +		\\
+			& \qquad + \DigammaFunc{\alpha_{nk}^*} - \DigammaFunc{\alpha_{n0}^*	}
+		\Big)
+	\Big\} \times \\ %%%%%%%%%%
+		& \quad \times \exp \Big\{
+			\Indic{Z_{nl}^b=k} \Big(
+				\Psi_{X_{nl}}^b
+				- \DigammaFunc{\beta_{lk}^* + \gamma_{lk}^*} \cancelto{1}{ \left(
+					\Indic{X_{nl}=0} + \Indic{X_{nl}=1} + \Indic{X_{nl}=2}
+				\right) } +		\\
+				& \qquad + \DigammaFunc{\alpha_{nk}^*} - \DigammaFunc{\alpha_{n0}^*}
+			\Big)
+		\Big\}
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	& \quad = \exp \left\{
+		\Psi_{X_{nl}}^a
+		- \DigammaFunc{\beta_{lk}^* + \gamma_{lk}^*}
+		+ \DigammaFunc{\alpha_{nk}^*} - \DigammaFunc{\alpha_{n0}^*}
+	\right\}^{\Indic{Z_{nl}^a=k}} \times \\ %%%%%%%%%%
+	& \qquad \times \exp \left\{
+		\Psi_{X_{nl}}^b
+		- \DigammaFunc{\beta_{lk}^* + \gamma_{lk}^*}
+		+ \DigammaFunc{\alpha_{nk}^*} - \DigammaFunc{\alpha_{n0}^*}
+	\right\}^{\Indic{Z_{nl}^b=k}}
+\\ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\intertext{توزیع حاصل هم توزیع با
+$\AppProb{Z}$
+و
+$\TrueProb{Z}$
+است با احتمال های جدید و می‌توان نتیجه گرفت:}
+\StarProb{Z^a} & \propto \prod_{nlk} {{\theta^*}_{nlk}^a}^{\Indic{Z_{nl}^a = k}}
+\\ %%%%%%%%%%%%%%%%%%%%
+\StarProb{Z^b} & \propto \prod_{nlk} {{\theta^*}_{nlk}^b}^{\Indic{Z_{nl}^b = k}}
+\\ %%%%%%%%%%%%%%%%%%%%
+\intertext{که در آن}
+{\theta^*}_{nlk}^a & \propto \exp \left\{
+	\Psi_{X_{nl}}^a
+	- \DigammaFunc{\beta_{lk}^* + \gamma_{lk}^*} + \DigammaFunc{\alpha_{nk}^*}
+	- \DigammaFunc{\alpha_{n0}^*}
+\right\}
+\\ %%%%%%%%%%%%%%%%%%%%
+{\theta^*}_{nlk}^b & \propto \exp \left\{
+	\Psi_{X_{nl}}^b
+	- \DigammaFunc{\beta_{lk}^* + \gamma_{lk}^*} + \DigammaFunc{\alpha_{nk}^*}
+	- \DigammaFunc{\alpha_{n0}^*}
+\right\}
+\\ %%%%%%%%%%%%%%%%%%%%
+\\ %%%%%%%%%%%%%%%%%%%%
+\Psi_{X_{nl}}^a &= \Indic{X_{nl}=0} \DigammaFunc{\gamma_{lk}^*}
+	+ \Indic{X_{nl}=1} \DigammaFunc{\beta_{lk}^*}
+	+ \Indic{X_{nl}=2} \DigammaFunc{\beta_{lk}^*},
+\\ %%%%%%%%%%%%%%%%%%%%
+\Psi_{X_{nl}}^b &= \Indic{X_{nl}=0} \DigammaFunc{\gamma_{lk}^*}
+	+ \Indic{X_{nl}=1} \DigammaFunc{\gamma_{lk}^*}
+	+ \Indic{X_{nl}=2} \DigammaFunc{\beta_{lk}^*}.
+\end{align*}
+\end{proof}

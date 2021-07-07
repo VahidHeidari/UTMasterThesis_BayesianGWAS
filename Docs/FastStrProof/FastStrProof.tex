@@ -1,0 +1,72 @@
+﻿\documentclass[12pt, onecolumn, a4paper]{article}
+
+\usepackage{epsfig, graphicx, amsthm, amsmath, amssymb, mathtools}
+\usepackage{unicode-math}
+\usepackage{subfig}
+\usepackage{color, xcolor}
+\usepackage{setspace}
+\usepackage{indentfirst}					% Indentation first paragrahs
+\usepackage{tabulary, tabularx}				% Table drawing packages
+\usepackage{color, soul}					% Highlight texts
+\usepackage{authblk}						% Author and affiliation
+
+% Hyper links
+\usepackage[pagebackref=false, colorlinks, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage[obeyDraft]{todonotes}
+\setlength{\marginparwidth}{2cm}
+
+% Xepersian package
+\usepackage[extrafootnotefeatures, localise=on]{xepersian}
+
+\settextfont[Path={./fonts/},
+	BoldFont={IRLotusICEE_Bold.ttf},
+	BoldItalicFont={IRLotusICEE_BoldIranic.ttf},
+	ItalicFont={IRLotusICEE_Iranic.ttf},
+	Scale=1.2]{IRLotusICEE.ttf}
+
+\setlatintextfont[Path={./fonts/},
+	BoldFont={LiberationSerif-Bold.ttf},
+	BoldItalicFont={LiberationSerif-BoldItalic.ttf},
+	ItalicFont={LiberationSerif-Italic.ttf},
+	Scale=1]{LiberationSerif-Regular.ttf}
+
+% Utility commands
+\input{Utilities}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\title{اثبات‌ قواعد به‌روزرسانی پارامترهای بیز تغییراتی}
+\author{وحید حیدری}
+\date{\today}
+\maketitle
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage
+\input{VBProof}
+
+\clearpage
+\input{chapter3}
+\\ \\ \\
+%\clearpage
+\input{VBUpdatingRules}
+
+
+
+%\clearpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{empty}
+{
+\small
+\onehalfspacing
+\bibliographystyle{plain-fa}
+\bibliography{./MyReferences}
+}
+
+
+
+\end{document}
