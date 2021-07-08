@@ -13,7 +13,7 @@ struct TimeTag {} extern Time;
 struct Warning {} extern warning;
 
 template <typename T>
-static Log& operator<<(Log& l, const T& t)
+inline static Log& operator<<(Log& l, const T& t)
 {
 	if (log_file.is_open()) {
 		log_file << t;
@@ -25,7 +25,7 @@ static Log& operator<<(Log& l, const T& t)
 	return l;
 }
 
-static Log& operator<<(Log& l, std::ostream& (*fp)(std::ostream&))
+inline static Log& operator<<(Log& l, std::ostream& (*fp)(std::ostream&))
 {
 	if (log_file.is_open()) {
 		fp(log_file);
@@ -38,12 +38,12 @@ static Log& operator<<(Log& l, std::ostream& (*fp)(std::ostream&))
 }
 
 template <>
-Log& operator<< <TimeTag>(Log& l, const TimeTag& t)
+inline Log& operator<< <TimeTag>(Log& l, const TimeTag& t)
 {
-
+	(void)t;
 	time_t start_time = time(nullptr);
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__CYGWIN__)
 	char* buff = ctime(&start_time);
 #else
 	enum { TIME_BUFF_SIZE = 30 };
@@ -59,8 +59,9 @@ Log& operator<< <TimeTag>(Log& l, const TimeTag& t)
 }
 
 template <>
-Log& operator<< <Warning>(Log& l, const Warning& w)
+inline Log& operator<< <Warning>(Log& l, const Warning& w)
 {
+	(void)w;
 	l << "WARNING: ";
 	return l;
 }
