@@ -11,9 +11,9 @@ JITTER = 3
 
 
 def main():
-    st = int(sys.argv[1])
-    md = int(sys.argv[2])
-    ed = int(sys.argv[3])
+    st = int(sys.argv[1]) if len(sys.argv) > 1 else -100
+    md = int(sys.argv[2]) if len(sys.argv) > 2 else 0
+    ed = int(sys.argv[3]) if len(sys.argv) > 3 else 100
     xs = []
     ys = []
     with open('data.txt', 'w') as f:
