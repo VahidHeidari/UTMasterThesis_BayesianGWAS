@@ -47,6 +47,8 @@
 # Log files
 log_file.txt
 log.txt
+cat_dataset.txt
+data.txt
 
 # Directories
 .vs
