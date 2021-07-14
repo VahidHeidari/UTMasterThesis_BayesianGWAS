@@ -10,7 +10,6 @@ int main(int argc, char** argv)
 	NUM_CLUSTERS = std::stoi(argv[1]);
 	NUM_LOCI = std::stoi(argv[2]);
 	NUM_INDIVS = std::stoi(argv[3]);
-	NUM_INDIVS = std::stoi(argv[3]);
 	const int DIFF_PERCENT = std::stoi(argv[4]);
 	const int DIFFS_LOCI = static_cast<int>(static_cast<double>(DIFF_PERCENT) / 100.0 * NUM_LOCI + 0.5);
 	NUM_DIFFS = (DIFFS_LOCI <= 0) ? 1 : DIFFS_LOCI;

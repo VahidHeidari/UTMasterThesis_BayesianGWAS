@@ -122,3 +122,138 @@ $\StarCProb{\theta_i}{X}$
 \VBMargin
 ها می‌گوییم.
 \end{theorem}
+
+
+
+\begin{proof}
+
+اثبات قضیه‌ی
+\hyperref[thm:VarBayeseTheorem]{بیز تغییراتی}
+در کتاب
+\cite{VBMethodsInSignal}
+آمده است و ما در اینجا آن را کمی بیشتر شرح می‌دهیم. برای اثبات، ملاک واگرایی
+KL
+را به شکل زیر می‌نویسیم:
+
+
+\allowdisplaybreaks
+\begin{align*}
+\KL{\AppCProb{\theta}{X}}{\TrueCProb{\theta}{X}}
+&= \int_{\Theta^*} \AppCProb{\theta_i}{X} \AppCProb{\theta_{/i}}{X} \ln \left( \frac{
+		\AppCProb{\theta_i}{X} \AppCProb{\theta_{/i}}{X}
+	}{
+		\TrueCProb{\theta}{X}
+	} \frac{ \TrueProb{X} }{ \TrueProb{X} }
+\right) d\theta																										\\
+%%%%%%%%%%
+	&= \int_{\Theta^*} \AppCProb{\theta_i}{X} \AppCProb{\theta_{/i}}{X} \ln \AppCProb{\theta_i}{X} d\theta +		\\
+		& \qquad + \int_{\Theta^*} \AppCProb{\theta_i}{X} \AppCProb{\theta_{/i}}{X} \left[
+			\ln \AppCProb{\theta_{/i}}{X} + \ln \TrueProb{X}
+		\right] d\theta +																							\\
+		& \qquad - \int_{\Theta^*} \AppCProb{\theta_i}{X} \AppCProb{\theta_{/i}}{X} \ln \TrueProb{\theta, X} d\theta		\\
+%%%%%%%%%%
+	&= \int_{\Theta_i^*} \int_{\Theta_{/i}^*}
+		\AppCProb{\theta_i}{X} \AppCProb{\theta_{/i}}{X} \ln \AppCProb{\theta_i}{X}
+	\,d\theta_{/i} \,d\theta_i +																					\\
+		& \qquad + \int_{\Theta_i^*} \int_{\Theta_{/i}^*}
+			\AppCProb{\theta_i}{X} \AppCProb{\theta_{/i}}{X} \ln \AppCProb{\theta_{/i}}{X}
+		\,d\theta_{/i} \,d\theta_i +																				\\
+		& \qquad + \int_{\Theta_i^*} \int_{\Theta_{/i}^*}
+			\AppCProb{\theta_i}{X} \AppCProb{\theta_{/i}}{X} \ln \TrueProb{X}
+		\,d\theta_{/i} \,d\theta_i +																				\\
+		& \qquad - \int_{\Theta_i^*} \int_{\Theta_{/i}^*}
+			\AppCProb{\theta_i}{X} \AppCProb{\theta_{/i}}{X} \ln \TrueProb{\theta, X}
+		\,d\theta_{/i} \,d\theta_i																					\\
+%%%%%%%%%%
+	&= \int_{\Theta_i^*} \AppCProb{\theta_i}{X} \ln \AppCProb{\theta_i}{X}
+		\cancelto{1}{\int_{\Theta_{/i}^*} \AppCProb{\theta_{/i}}{X} \,d\theta_{/i}}
+	\,d\theta_i +																									\\
+		& \qquad + \int_{\Theta_{/i}^*} \AppCProb{\theta_{/i}}{X} \ln \AppCProb{\theta_{/i}}{X}
+			\cancelto{1}{\int_{\Theta_i^*} \AppCProb{\theta_i}{X} \,d\theta_{i}}
+		\,d\theta_{/i} +																							\\
+		& \qquad + \ln \TrueProb{X} \cancelto{1}{\int_{\Theta_i^*} \AppCProb{\theta_i}{X}
+			\cancelto{1}{\int_{\Theta_{/i}^*} \AppCProb{\theta_{/i}}{X} \,d\theta_{/i}}
+		\,d\theta_i} +																								\\
+		& \qquad - \int_{\Theta_i^*} \AppCProb{\theta_i}{X}
+			\int_{\Theta_{/i}^*} \AppCProb{\theta_{/i}}{X} \TrueProb{\theta, X} \,d\theta_{/i}
+		\,d\theta_i																									\\
+%%%%%%%%%%
+	&= \int_{\Theta_i^*} \AppCProb{\theta_i}{X} \ln \AppCProb{\theta_i}{X} \,d\theta_i +							\\
+		& \qquad + \int_{\Theta_{/i}^*} \AppCProb{\theta_{/i}}{X} \ln \AppCProb{\theta_{/i}}{X} \,d\theta_{/i} +
+			\ln \TrueProb{X} +																						\\
+		& \qquad - \int_{\Theta_i^*} \AppCProb{\theta_i}{X} \left[
+			\int_{\Theta_{/i}^*} \AppCProb{\theta_{/i}}{X} \ln \TrueProb{\theta, X} \,d\theta_{/i}
+		\right] \,d\theta_i																							\\
+%%%%%%%%%%
+	&= \int_{\Theta_i^*} \AppCProb{\theta_i}{X} \ln \AppCProb{\theta_i}{X} \,d\theta_i + \eta_i + \ln \TrueProb{X} +	\\
+		& \qquad - \int_{\Theta_i^*} \AppCProb{\theta_i}{X} \left[
+			\int_{\Theta_{/i}^*} \AppCProb{\theta_{/i}}{X} \ln \TrueProb{\theta, X} \,d\theta_{/i}
+		\right] \,d\theta_i
+\end{align*}
+
+
+که در آن
+$\eta_i = \Exp{\AppCProb{\theta_{/i}}{X}}{\ln \left( \AppCProb{\theta_{/i}}{X} \right)}$
+برای هر عدد ثابت و غیر صفر
+$\zeta_i \neq 0$, \linebreak $i = 1, \dots, q$
+بر قرار است:
+
+
+\begin{align*}
+KL \left( \AppCProb{\theta}{X} \parallel \TrueCProb{\theta}{X} \right)
+	&= \int_{\Theta_i^*} \AppCProb{\theta_i}{X} \ln \AppCProb{\theta_i}{X} \,d\theta_i + \ln \TrueProb{X} + \eta_i +			\\
+		& \qquad - \int_{\Theta_i^*} \AppCProb{\theta_i}{X} \left\{
+			\ln \left[
+				\frac{\zeta_i}{\zeta_i} \exp \Exp{\AppCProb{\theta_{/i}}{X}}{\ln \TrueProb{\theta, X}} \right] \right\} \,d\theta_i	\\
+%%%%%%%%%%
+	&= \int_{\Theta_i^*} \AppCProb{\theta_i}{X} \ln \AppCProb{\theta_i}{X} \,d\theta_i + \ln \TrueProb{X} + \eta_i				\\
+		& \qquad - \int_{\Theta_i^*} \AppCProb{\theta_i}{X} \left\{
+			\ln \zeta_i + \ln \frac{1}{\zeta_i} \exp \Exp{\AppCProb{\theta_{/i}}{X}}{\ln \TrueProb{\theta, X}} \right\} \,d\theta_i	\\
+%%%%%%%%%%
+	&= \int_{\Theta_i^*} \AppCProb{\theta_i}{X} \ln \AppCProb{\theta_i}{X} \,d\theta_i + \ln \TrueProb{X} + \eta_i +			\\
+		& \qquad + \int_{\Theta_i^*} \ln \frac{1}{\frac{1}{\zeta_i} \exp \Exp{\AppCProb{\theta_{/i}}{X}}{\ln \TrueProb{\theta, X}}} \,d\theta_i		\\
+		& \qquad - \ln \zeta_i \int_{\Theta_i^*} \AppCProb{\theta_i}{X} \,d\theta_i													\\
+%%%%%%%%%%
+	&= \int_{\Theta_i^*} \AppCProb{\theta_i}{X} \ln \AppCProb{\theta_i}{X} +
+		\ln \frac{1}{\frac{1}{\zeta_i} \exp \Exp{\AppCProb{\theta_{/i}}{X}}{\ln \TrueProb{\theta, X}}} \,d\theta_i +					\\
+		& \qquad + \ln \TrueProb{X} + \eta_i - \ln \zeta_i																					\\
+%%%%%%%%%%
+	&= \int_{\Theta_i^*} \AppCProb{\theta_i}{X} \ln \frac{
+			\AppCProb{\theta_i}{X}
+		}{
+			\frac{1}{\zeta_i} \exp \Exp{\AppCProb{\theta_{/i}}{X}}{\ln \TrueProb{\theta, X}}
+		} \,d\theta_i +																														\\
+		& \qquad \ln \TrueProb{X} + \eta_i - \ln \zeta_i
+\end{align*}
+
+
+با انتخاب
+$\zeta_i, i = 1, \dots, q$
+بطوریکه ثابت نرمال‌کننده‌ای برای
+$\exp \Exp{}{\centerdot}$
+در مخرج باشد خواهیم داشت:
+
+
+\begin{equation*}
+	\zeta_i = \int_{\Theta_i^*} \exp \Exp{\AppCProb{\theta_{/i}}{X}}{\ln \TrueProb{\theta, X}} \, d\theta_i, i = 1, \dots, q
+\end{equation*}
+
+
+پس آخرین تساوی می‌تواند بر اساس عباراتی از واگرایی
+KL
+به طوری که
+$\forall i \in \left\{1, \dots, q \right\}$
+بازنویسی شود:
+
+
+\begin{align*}
+%\label{eq:KLOfVBMarginals}
+\KL{\AppCProb{\theta}{X}}{\TrueCProb{\theta}{X}} &= \KL{
+	\AppCProb{\theta_i}{X}
+}{
+	\frac{1}{\zeta_i} \exp \Exp{\TrueCProb{\theta_{/i}}{X}}{\ln \TrueProb{\theta, X}}
+} + 																									\\
+ & \qquad + \ln \TrueProb{X} - \ln \zeta_i + \eta_i.
+\end{align*}
+
+\end{proof}
