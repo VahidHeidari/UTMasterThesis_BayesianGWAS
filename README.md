@@ -54,8 +54,8 @@ Association mapping in GWAS, Disease graph, SNP interactions
 <strong>&ldquo;Topic modeling based on variational Bayes method&rdquo;</strong><br>
 <strong>V. Heidari</strong>, S. M. Taheri&ast;, S. M. Amini<br>
 <i>Signal and Data Processing,</i> 2023 (Under review)<br>
-<a href="http://jsdp.rcisp.ac.ir/article-1-1228-en.html"><img alt="Paper" src="https://github.com/VahidHeidari/UTMasterThesis_BayesianGWAS/blob/master/Images/PaperGray.png?raw=true"></a>
-<a href="https://github.com/VahidHeidari/TopicModeling"><img alt="Code" src="https://github.com/VahidHeidari/UTMasterThesis_BayesianGWAS/blob/master/Images/CodeGray.png?raw=true"></a>
+<a target="_blank" href="http://jsdp.rcisp.ac.ir/article-1-1228-en.html"><img alt="Paper" src="https://github.com/VahidHeidari/UTMasterThesis_BayesianGWAS/blob/master/Images/PaperGray.png?raw=true"></a>
+<a target="_blank" href="https://github.com/VahidHeidari/TopicModeling"><img alt="Code" src="https://github.com/VahidHeidari/UTMasterThesis_BayesianGWAS/blob/master/Images/CodeGray.png?raw=true"></a>
 </td>
 </tr>
 <tr>
@@ -63,8 +63,8 @@ Association mapping in GWAS, Disease graph, SNP interactions
 <strong>&ldquo;Population-structured Bayesian epistasis association mapping&rdquo;</strong><br>
 <strong>V. Heidari&ast;</strong>, S. M. Amini, S. M. Taheri<br>
 <i>13th Seminar on Probability and Stochastic Process,</i> 2021<br>
-<a href="https://spsp13.hsu.ac.ir/files/site1/files/Proceeding-En.pdf#page=99"><img alt="Paper" src="https://github.com/VahidHeidari/UTMasterThesis_BayesianGWAS/blob/master/Images/PaperGray.png?raw=true"></a>
-<a href="https://github.com/VahidHeidari/StrBEAM"><img alt="Code" src="https://github.com/VahidHeidari/UTMasterThesis_BayesianGWAS/blob/master/Images/CodeGray.png?raw=true"></a>
+<a target="_blank" href="https://www.researchgate.net/publication/357303101_Population-Structured_Bayesian_Epistasis_Association_Mapping"><img alt="Paper" src="https://github.com/VahidHeidari/UTMasterThesis_BayesianGWAS/blob/master/Images/PaperGray.png?raw=true"></a>
+<a target="_blank" href="https://github.com/VahidHeidari/StrBEAM"><img alt="Code" src="https://github.com/VahidHeidari/UTMasterThesis_BayesianGWAS/blob/master/Images/CodeGray.png?raw=true"></a>
 </td>
 </tr>
 </table>
