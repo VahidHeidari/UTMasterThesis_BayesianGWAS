@@ -185,4 +185,5 @@ private:
 	GenotypeMatrixType* genos;
 #endif
 };
+
 #endif

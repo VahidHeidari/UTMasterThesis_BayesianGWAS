@@ -45,7 +45,7 @@ static constexpr int NUM_CHROMOSOMES = 2;
 
 
 static const std::string DUMP_PATH =
-#ifdef __linux__
+#if defined __linux__ || defined __CYGWIN__
 	"";
 #else
 	"F:\\C++\\MySTRUCTURE\\";
@@ -698,7 +698,7 @@ inline static bool ReadFreqsFromTextFile(std::string path, FreqsVector& freqs)
 
 static bool IsFileExist(const std::string& path)
 {
-#ifdef __linux__
+#if defined __linux__ || defined __CYGWIN__
 	return std::filesystem::exists(path);
 #else
 	return std::experimental::filesystem::exists(path);
@@ -758,6 +758,7 @@ inline bool InitGenos(BitGenosMatrix& genos, const FreqsVector& freqs, int num_i
 
 inline static void LogIterations(int itr, int MAX_ITERS, double old_llbo)
 {
+	(void) MAX_ITERS;
 #ifdef USE_LLBO
 	//logger << "LLBO:" << old_LLBO << std::endl;
 #endif
@@ -765,7 +766,7 @@ inline static void LogIterations(int itr, int MAX_ITERS, double old_llbo)
 	if (itr % ITER_REPORT == 0)
 		logger << Time << " itr #" << itr << "     LLBO:" <<
 #ifdef USE_LLBO
-		old_LLBO
+		old_llbo
 #else
 		"NOT USED"
 #endif
@@ -811,9 +812,11 @@ int main(int argc, char** argv)
 	logger << "===== VB STRUCT =====" << std::endl;
 	logger << "Start : " << Time << std::endl;
 	logger << "MAX_ITERS    : " << MAX_ITERS << std::endl;
+	logger << "MIN_ITERS    : " << MIN_ITERS << std::endl;
 	//logger << "LLBO_UPDATE  : " << LLBO_UPDATE << std::endl;
 	logger << "LLBO_EPSILON : " << LLBO_EPSILON << std::endl;
 	logger << "sizeof(int)  : " << sizeof(int) << std::endl;
+	logger << "USE VECTOR   : " << (USE_VECTOR ? "TRUE" : "FALSE") << std::endl;
 	logger << std::endl;
 
 	if (argc < 2) {
