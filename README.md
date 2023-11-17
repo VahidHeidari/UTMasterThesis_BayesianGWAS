@@ -45,6 +45,13 @@ __Keywords:__ Variational Bayes inference, Markov chain Monte Carlo,
 Association mapping in GWAS, Disease graph, SNP interactions
 
 
+# Directories
+* __Datasets__: Synthetic and real datasets
+* __Docs__: Presentation slides and some additional supplementary proofs
+* __Images__: Plots that illustrates our results
+* __MySTRUCTURE__: Final implementation of our proposed method
+* __Python__: Some prototype implementations used for proof of concepts
+* __Tools__: Utility tools used for generating gene pools and RNAseq mapping
 
 # Publications
 
@@ -53,7 +60,7 @@ Association mapping in GWAS, Disease graph, SNP interactions
 <td>
 <strong>&ldquo;Topic modeling based on variational Bayes method&rdquo;</strong><br>
 <strong>V. Heidari</strong>, S. M. Taheri&ast;, S. M. Amini<br>
-<i>Signal and Data Processing,</i> 2023 (Under review)<br>
+<i>Signal and Data Processing,</i> 2023<br>
 <a target="_blank" href="http://jsdp.rcisp.ac.ir/article-1-1228-en.html"><img alt="Paper" src="https://github.com/VahidHeidari/UTMasterThesis_BayesianGWAS/blob/master/Images/PaperGray.png?raw=true"></a>
 <a target="_blank" href="https://github.com/VahidHeidari/TopicModeling"><img alt="Code" src="https://github.com/VahidHeidari/UTMasterThesis_BayesianGWAS/blob/master/Images/CodeGray.png?raw=true"></a>
 </td>
